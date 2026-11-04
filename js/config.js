@@ -41,6 +41,12 @@ window.WEDDING_CONFIG = {
     { src: "assets/images/gallery/g6.webp", focus: "50% 18%", alt: "Yunus dan Suci dalam potret bersama", caption: "Together in this journey." },
     { src: "assets/images/gallery/g7.webp", focus: "50% 25%", alt: "Yunus dan Suci saling menatap", caption: "The beginning of forever." }
   ],
+  // Rekening untuk tanda kasih. Tambah rekening lain dengan menyalin satu baris { ... }.
+  gift: {
+    accounts: [
+      { bank: "BCA", number: "3460722241", holder: "Muhamad Yunus Ramadhan" }
+    ]
+  },
   audio: "assets/audio/wedding-song.mp3", // Ari Lasso — Cinta Terakhir
   developer: {
     name: "Ilmi Restu Firdaus",

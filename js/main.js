@@ -88,6 +88,59 @@
   setEventTime("receptionTime", wedding.receptionTime);
   if (config.venue?.mapsUrl && $("mapsLink")) $("mapsLink").href = config.venue.mapsUrl;
 
+  // Wedding gift: kartu rekening dibuat dari config.gift.accounts, lengkap dengan tombol salin.
+  async function copyText(text) {
+    try {
+      if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); return true; }
+    } catch (error) { /* lanjut ke cara cadangan */ }
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.cssText = "position:fixed;top:-100px;opacity:0";
+    document.body.appendChild(area);
+    area.select();
+    area.setSelectionRange(0, text.length);
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (error) { ok = false; }
+    area.remove();
+    return ok;
+  }
+  const giftList = $("giftList");
+  const giftAccounts = Array.isArray(config.gift?.accounts) ? config.gift.accounts : [];
+  if (giftList) {
+    if (!giftAccounts.length) giftList.closest(".gift-section")?.setAttribute("hidden", "");
+    giftAccounts.forEach((account) => {
+      const card = document.createElement("article");
+      card.className = "gift-card reveal";
+      const bank = document.createElement("p");
+      bank.className = "gift-bank";
+      bank.textContent = account.bank || "";
+      const number = document.createElement("p");
+      number.className = "gift-number";
+      number.textContent = account.number || "";
+      const holder = document.createElement("p");
+      holder.className = "gift-holder";
+      holder.textContent = `a.n. ${account.holder || ""}`;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "copy-button";
+      button.setAttribute("aria-label", `Salin nomor rekening ${account.bank || ""}`);
+      button.innerHTML = '<span class="copy-label">SALIN NOMOR</span><b aria-hidden="true">❐</b>';
+      button.addEventListener("click", async () => {
+        const ok = await copyText(String(account.number || "").replace(/\s/g, ""));
+        const label = button.querySelector(".copy-label");
+        showToast(ok ? `Nomor rekening ${account.bank} berhasil disalin.` : "Belum dapat menyalin. Silakan salin nomor secara manual.");
+        if (ok && label) {
+          label.textContent = "TERSALIN ✓";
+          button.classList.add("copied");
+          window.setTimeout(() => { label.textContent = "SALIN NOMOR"; button.classList.remove("copied"); }, 2200);
+        }
+      });
+      card.append(bank, number, holder, button);
+      giftList.appendChild(card);
+    });
+  }
+
   // Build all gallery tiles from the single configuration array.
   const gallery = $("photoGallery");
   if (gallery) {
