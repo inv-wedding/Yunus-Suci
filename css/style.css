@@ -870,3 +870,10 @@ html.js .reveal[data-fx="left"],html.js .reveal[data-fx="right"]{--slide:110px}
 /* --- v4.2: snap bawaan browser dimatikan; perpindahan halaman diatur JS (lebih lambat) --- */
 html{scroll-snap-type:none}
 main>section[id],.couple-divider{scroll-snap-align:none}
+
+
+/* --- Nama tamu di sampul (dari ?to=) --- */
+.cover-guest{margin:0 auto 22px;padding:12px 22px;max-width:92%;border-top:1px solid rgba(234,215,187,.45);border-bottom:1px solid rgba(234,215,187,.45);text-align:center;color:#f1ddbf}
+.cover-guest[hidden]{display:none}
+.cover-guest p,.cover-guest small{display:block;margin:0;font-size:10px;letter-spacing:.2em;text-transform:uppercase}
+.cover-guest strong{display:block;margin:4px 0;color:#fff9f3;font-family:var(--serif);font-size:clamp(1.4rem,5vw,2rem);font-style:italic;font-weight:500;line-height:1.2;overflow-wrap:anywhere}

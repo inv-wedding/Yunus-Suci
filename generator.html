@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Generator Link Tamu — Yunus & Suci</title>
+<style>
+:root{--bg:#fff9f3;--ink:#2f1f23;--line:#e3d3c0;--accent:#6b2a3a;--card:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,sans-serif;padding:16px}
+main{max-width:860px;margin:0 auto}h1{font-size:1.4rem;margin:.2em 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0}
+label{display:block;font-weight:600;margin:10px 0 4px}
+input,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;font:inherit}
+textarea{min-height:180px}
+button,.btn{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:10px 14px;font:inherit;cursor:pointer;text-decoration:none;display:inline-block}
+button.alt{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+small,.hint{color:#7a6568}
+table{width:100%;border-collapse:collapse}td,th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px}
+td.link{word-break:break-all;font-size:12px;color:#7a6568}
+textarea.msg{min-height:150px}
+</style>
+</head>
+<body>
+<main>
+<h1>Generator Link Tamu Undangan</h1>
+<p class="hint">Tempel daftar tamu, link personal dibuat otomatis. Semua diproses di browser Anda; daftar tamu tidak dikirim ke mana pun.</p>
+
+<div class="card">
+  <label for="base">Alamat website undangan</label>
+  <input id="base" placeholder="https://username.github.io/nama-repo/" inputmode="url">
+  <label for="list">Daftar tamu (satu per baris)</label>
+  <textarea id="list" placeholder="Bapak Ahmad&#10;Ibu Siti Aminah | 0812xxxxxxx&#10;Keluarga Bpk. Budi, 62857xxxxxxx"></textarea>
+  <p class="hint">Opsional: tambahkan nomor WhatsApp setelah tanda <b>|</b>, koma, atau tab agar tombol Kirim langsung membuka chat tamu tersebut. Bisa juga tempel dua kolom dari Excel/Google Sheets.</p>
+  <label for="msg">Pesan WhatsApp</label>
+  <textarea id="msg" class="msg"></textarea>
+  <p class="hint">{nama} diganti nama tamu, {link} diganti link personal.</p>
+  <div class="row"><button id="gen">Buat Link</button><button class="alt" id="copyAll">Salin Semua</button><button class="alt" id="csv">Unduh CSV</button></div>
+</div>
+
+<div class="card" id="out" hidden>
+  <strong id="count"></strong>
+  <table><thead><tr><th>#</th><th>Tamu</th><th>Link</th><th></th></tr></thead><tbody id="rows"></tbody></table>
+</div>
+</main>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const store = { get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}} };
+  const defaultMsg = "Assalamu'alaikum Wr. Wb.\n\nKepada Yth. {nama}\n\nDengan penuh rasa syukur, kami Yunus & Suci mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara pernikahan kami, Minggu, 22 November 2026.\n\nDetail undangan:\n{link}\n\nMerupakan kebahagiaan bagi kami apabila berkenan hadir dan memberikan doa restu.\n\nWassalamu'alaikum Wr. Wb.\nYunus & Suci";
+  const initialBase = (() => { const u = new URL(location.href); return location.protocol.startsWith("http") ? new URL("index.html", u).href : ""; })();
+  $("base").value = store.get("gen.base") || initialBase;
+  $("list").value = store.get("gen.list") || "";
+  $("msg").value = store.get("gen.msg") || defaultMsg;
+  let data = [];
+
+  function normPhone(p) {
+    let d = (p || "").replace(/[^\d]/g, "");
+    if (!d) return "";
+    if (d.startsWith("0")) d = "62" + d.slice(1);
+    else if (d.startsWith("8")) d = "62" + d;
+    return d;
+  }
+  function parse() {
+    return $("list").value.split(/\r?\n/).map(l => l.trim()).filter(Boolean).map(line => {
+      const parts = line.split(/\s*[|\t;]\s*|\s*,\s*(?=\+?\d[\d\s-]{7,}$)/);
+      const name = parts[0].trim();
+      const phone = normPhone(parts[1] || "");
+      return { name, phone };
+    }).filter(x => x.name);
+  }
+  function linkFor(name) {
+    const base = $("base").value.trim();
+    const u = new URL(base || "index.html", location.href);
+    u.searchParams.set("to", name);
+    return u.href;
+  }
+  function msgFor(g) { return $("msg").value.replaceAll("{nama}", g.name).replaceAll("{link}", g.link); }
+  function render() {
+    data = parse().map(g => ({ ...g, link: linkFor(g.name) }));
+    store.set("gen.base", $("base").value); store.set("gen.list", $("list").value); store.set("gen.msg", $("msg").value);
+    $("out").hidden = !data.length;
+    $("count").textContent = data.length + " tamu";
+    const tb = $("rows"); tb.textContent = "";
+    data.forEach((g, i) => {
+      const tr = document.createElement("tr");
+      const cells = [String(i + 1), g.name + (g.phone ? "\n+" + g.phone : "")];
+      cells.forEach(t => { const td = document.createElement("td"); td.style.whiteSpace = "pre-line"; td.textContent = t; tr.appendChild(td); });
+      const l = document.createElement("td"); l.className = "link"; l.textContent = g.link; tr.appendChild(l);
+      const act = document.createElement("td");
+      const wa = document.createElement("a"); wa.className = "btn"; wa.target = "_blank"; wa.rel = "noopener"; wa.textContent = "Kirim WA";
+      wa.href = "https://wa.me/" + g.phone + "?text=" + encodeURIComponent(msgFor(g));
+      const cp = document.createElement("button"); cp.className = "alt"; cp.textContent = "Salin"; cp.style.marginLeft = "6px";
+      cp.onclick = () => copy(msgFor(g), cp);
+      act.append(wa, cp); tr.appendChild(act); tb.appendChild(tr);
+    });
+  }
+  async function copy(text, btn) {
+    try { await navigator.clipboard.writeText(text); } catch (e) { prompt("Salin teks berikut:", text); return; }
+    if (btn) { const t = btn.textContent; btn.textContent = "Tersalin ✓"; setTimeout(() => btn.textContent = t, 1400); }
+  }
+  $("gen").onclick = render;
+  $("copyAll").onclick = e => { render(); copy(data.map(g => g.name + "\t" + g.link).join("\n"), e.target); };
+  $("csv").onclick = () => {
+    render();
+    const q = s => '"' + String(s).replace(/"/g, '""') + '"';
+    const csv = "﻿Nama,WhatsApp,Link\n" + data.map(g => [q(g.name), q(g.phone), q(g.link)].join(",")).join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+    a.download = "daftar-link-tamu.csv"; a.click();
+  };
+  if ($("list").value) render();
+})();
+</script>
+</body>
+</html>

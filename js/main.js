@@ -24,6 +24,19 @@
     toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2600);
   }
 
+  // Nama tamu otomatis dari link: index.html?to=Nama+Tamu (juga ?nama= atau ?u=).
+  // Dibuat lewat generator.html. Dipasang dengan textContent sehingga aman dari injeksi HTML.
+  const guestParams = new URLSearchParams(window.location.search);
+  const guestRaw = guestParams.get("to") || guestParams.get("nama") || guestParams.get("u") || "";
+  const guestName = guestRaw.replace(/\s+/g, " ").trim().slice(0, 80);
+  if (guestName && $("coverGuest") && $("guestName")) {
+    $("guestName").textContent = guestName;
+    $("coverGuest").hidden = false;
+    document.title = "Undangan untuk " + guestName + " — Yunus & Suci";
+  }
+  // Link yang dibagikan tidak membawa nama tamu tertentu.
+  const sharedUrl = (() => { const u = new URL(window.location.href); u.search = ""; u.hash = ""; return u.href; })();
+
   // Date and countdown: the configured timestamp includes the Jakarta UTC+7 offset.
   const targetDate = new Date(wedding.date || "").getTime();
   const countdownIds = [
@@ -504,16 +517,16 @@
     const shareData = {
       title: "Yunus & Suci — The Beginning of Forever",
       text: "Dengan penuh rasa syukur, kami mengundang Anda untuk hadir pada hari pernikahan kami, Minggu 22 November 2026.",
-      url: window.location.href
+      url: sharedUrl
     };
     try {
       if (navigator.share) {
         await navigator.share(shareData);
       } else if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(window.location.href);
+        await navigator.clipboard.writeText(sharedUrl);
         showToast("Link undangan berhasil disalin.");
       } else {
-        window.prompt("Salin link undangan berikut:", window.location.href);
+        window.prompt("Salin link undangan berikut:", sharedUrl);
       }
     } catch (error) {
       if (error.name !== "AbortError") showToast("Link belum dapat dibagikan. Silakan salin alamat website.");

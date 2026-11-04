@@ -113,3 +113,11 @@ Pemeriksaan source, struktur aset, referensi gambar, sintaks JavaScript, dan pem
 
 - Scroll manual bebas, tanpa snap/tarikan otomatis. Animasi meluncur lambat (1,1–2,2 detik, easing halus) hanya dipakai saat menekan tombol di `js/main.js` bagian "Perpindahan halaman". Ubah kecepatan pada baris `const duration = Math.max(1100, Math.min(2200, ...))`. Tombol Buka Undangan, navigator, dan tombol ke atas memakai animasi yang sama.
 - Musik dicoba diputar sejak halaman dibuka; jika diblokir browser, mulai pada interaksi pertama (sentuhan, ketukan, atau tombol Buka Undangan).
+
+## Pembaruan: nama tamu otomatis
+
+- Buka `generator.html`, isi alamat website undangan, tempel daftar tamu (satu per baris, nomor WhatsApp opsional setelah `|` atau koma), lalu klik **Buat Link**.
+- Tiap tamu mendapat link personal, contoh `.../index.html?to=Bapak+Ahmad`. Sampul undangan otomatis menampilkan "Kepada Yth. Bapak Ahmad — di Tempat".
+- Tombol **Kirim WA** membuka WhatsApp dengan pesan siap kirim (teks pesan bisa diubah). Tersedia juga **Salin Semua** dan **Unduh CSV**.
+- Link tanpa `?to=` tetap normal (tanpa blok nama tamu). Tombol Share tidak membawa nama tamu.
+- `generator.html` tidak ditautkan dari undangan dan berisi `noindex`; daftar tamu diproses di browser dan tidak dikirim ke server.
