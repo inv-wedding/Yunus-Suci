@@ -32,7 +32,7 @@
   if (guestName && $("coverGuest") && $("guestName")) {
     $("guestName").textContent = guestName;
     $("coverGuest").hidden = false;
-    document.title = "Undangan untuk " + guestName + " — Yunus & Suci";
+    document.title = "Undangan untuk " + guestName + " — Suci & Yunus";
   }
   // Link yang dibagikan tidak membawa nama tamu tertentu.
   const sharedUrl = (() => { const u = new URL(window.location.href); u.search = ""; u.hash = ""; return u.href; })();
@@ -54,7 +54,7 @@
     const remaining = targetDate - Date.now();
     if (remaining <= 0) {
       countdownIds.flat().forEach((id) => { if ($(id)) $(id).textContent = "00"; });
-      if (countdownMessage) countdownMessage.textContent = "Hari bahagia telah tiba. Mohon doa restu untuk Yunus & Suci.";
+      if (countdownMessage) countdownMessage.textContent = "Hari bahagia telah tiba. Mohon doa restu untuk Suci & Yunus.";
       return;
     }
     const seconds = Math.floor(remaining / 1000);
@@ -162,10 +162,10 @@
       button.type = "button";
       button.className = "gallery-photo reveal";
       button.dataset.galleryIndex = String(index);
-      button.setAttribute("aria-label", `Lihat foto ${index + 1}: ${item.alt || "Yunus dan Suci"}`);
+      button.setAttribute("aria-label", `Lihat foto ${index + 1}: ${item.alt || "Suci dan Yunus"}`);
       const image = document.createElement("img");
       image.src = item.src;
-      image.alt = item.alt || `Foto Yunus dan Suci ${index + 1}`;
+      image.alt = item.alt || `Foto Suci dan Yunus ${index + 1}`;
       image.loading = "lazy";
       image.decoding = "async";
       if (item.focus) image.style.objectPosition = item.focus;
@@ -515,7 +515,7 @@
   // Share via Web Share API, clipboard, or a manual-copy fallback.
   $("shareInvitation")?.addEventListener("click", async () => {
     const shareData = {
-      title: "Yunus & Suci — The Beginning of Forever",
+      title: "Suci & Yunus — The Beginning of Forever",
       text: "Dengan penuh rasa syukur, kami mengundang Anda untuk hadir pada hari pernikahan kami, Minggu 22 November 2026.",
       url: sharedUrl
     };
@@ -547,7 +547,7 @@
     activePhoto = (index + galleryItems.length) % galleryItems.length;
     const item = galleryItems[activePhoto];
     lightboxImage.src = item.src;
-    lightboxImage.alt = item.alt || `Foto Yunus dan Suci ${activePhoto + 1}`;
+    lightboxImage.alt = item.alt || `Foto Suci dan Yunus ${activePhoto + 1}`;
     lightboxCaption.textContent = item.caption || "";
     lightboxCount.textContent = `${String(activePhoto + 1).padStart(2, "0")} / ${String(galleryItems.length).padStart(2, "0")}`;
   }

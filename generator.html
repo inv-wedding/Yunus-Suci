@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Generator Link Tamu — Yunus & Suci</title>
+<title>Generator Link Tamu — Suci & Yunus</title>
 <style>
 :root{--bg:#fff9f3;--ink:#2f1f23;--line:#e3d3c0;--accent:#6b2a3a;--card:#fff}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,sans-serif;padding:16px}
@@ -48,7 +48,7 @@ textarea.msg{min-height:150px}
 (() => {
   const $ = id => document.getElementById(id);
   const store = { get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}} };
-  const defaultMsg = "Assalamu'alaikum Wr. Wb.\n\nKepada Yth. {nama}\n\nDengan penuh rasa syukur, kami Yunus & Suci mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara pernikahan kami, Minggu, 22 November 2026.\n\nDetail undangan:\n{link}\n\nMerupakan kebahagiaan bagi kami apabila berkenan hadir dan memberikan doa restu.\n\nWassalamu'alaikum Wr. Wb.\nYunus & Suci";
+  const defaultMsg = "Assalamu'alaikum Wr. Wb.\n\nKepada Yth. {nama}\n\nDengan penuh rasa syukur, kami Suci & Yunus mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara pernikahan kami, Minggu, 22 November 2026.\n\nDetail undangan:\n{link}\n\nMerupakan kebahagiaan bagi kami apabila berkenan hadir dan memberikan doa restu.\n\nWassalamu'alaikum Wr. Wb.\nSuci & Yunus";
   const initialBase = (() => { const u = new URL(location.href); return location.protocol.startsWith("http") ? new URL("index.html", u).href : ""; })();
   $("base").value = store.get("gen.base") || initialBase;
   $("list").value = store.get("gen.list") || "";

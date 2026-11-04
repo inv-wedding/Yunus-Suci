@@ -1,10 +1,10 @@
 /*
- * KONFIGURASI UNDANGAN YUNUS & SUCI
+ * KONFIGURASI UNDANGAN SUCI & YUNUS
  * Ubah data acara di file ini agar pembaruan otomatis di seluruh website.
  */
 window.WEDDING_CONFIG = {
-  couple: "Yunus & Suci",
-  monogram: "Y & S",
+  couple: "Suci & Yunus",
+  monogram: "S & Y",
   groom: {
     name: "Muhamad Yunus Ramadhan",
     nickname: "Yunus",
@@ -35,11 +35,11 @@ window.WEDDING_CONFIG = {
   },
   // focus = titik fokus foto (x y) agar wajah tidak terpotong di tampilan HP.
   gallery: [
-    { src: "assets/images/gallery/g1.webp", focus: "50% 38%", alt: "Yunus dan Suci berpose bersama dalam busana serasi", caption: "A moment to remember." },
-    { src: "assets/images/gallery/g2.webp", focus: "50% 45%", alt: "Yunus dan Suci duduk berdampingan", caption: "Little moments, endless memories." },
-    { src: "assets/images/gallery/g3.webp", focus: "50% 55%", alt: "Yunus dan Suci berdiri bersama", caption: "Every picture holds a story." },
-    { src: "assets/images/gallery/g6.webp", focus: "50% 18%", alt: "Yunus dan Suci dalam potret bersama", caption: "Together in this journey." },
-    { src: "assets/images/gallery/g7.webp", focus: "50% 25%", alt: "Yunus dan Suci saling menatap", caption: "The beginning of forever." }
+    { src: "assets/images/gallery/g1.webp", focus: "50% 38%", alt: "Suci dan Yunus berpose bersama dalam busana serasi", caption: "A moment to remember." },
+    { src: "assets/images/gallery/g2.webp", focus: "50% 45%", alt: "Suci dan Yunus duduk berdampingan", caption: "Little moments, endless memories." },
+    { src: "assets/images/gallery/g3.webp", focus: "50% 55%", alt: "Suci dan Yunus berdiri bersama", caption: "Every picture holds a story." },
+    { src: "assets/images/gallery/g6.webp", focus: "50% 18%", alt: "Suci dan Yunus dalam potret bersama", caption: "Together in this journey." },
+    { src: "assets/images/gallery/g7.webp", focus: "50% 25%", alt: "Suci dan Yunus saling menatap", caption: "The beginning of forever." }
   ],
   // Rekening untuk tanda kasih. Tambah rekening lain dengan menyalin satu baris { ... }.
   gift: {

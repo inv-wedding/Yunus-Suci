@@ -1,4 +1,4 @@
-# Undangan Pernikahan Yunus & Suci
+# Undangan Pernikahan Suci & Yunus
 
 Website undangan digital statis bertema **Modern Romantic Editorial — Elegant Wedding**. Proyek ini merupakan penyempurnaan dari source code asli, bukan proyek baru.
 
